@@ -8,27 +8,47 @@ import 'skeleton-css/css/normalize.css';
 import 'skeleton-css/css/skeleton.css';
 import './App.css';
 
-import { Column, Container, Row } from './Components';
+import { Column, Container, Row, TextAlignment } from './Components';
 
-const debug = (s: string) =>
+const debug = (s = 'DEBUG') =>
     mapProps((props: any) => {
         console.log(s, props);
         return props;
     });
 
 const LandingPage: React.SFC = () => (
-    <Container>
-        LANDING
+    <Container textAlign={TextAlignment.center}>
+        <img
+            src={`${process.env.PUBLIC_URL}/images/title-white.jpg`}
+            style={{ maxWidth: '100%', maxHeight: '65vh' }}
+        />
+        <br />
         <Link to='/page/1'>
             <button>
-                START
+                Open
             </button>
         </Link>
     </Container>
 );
 
+const toPage = R.pipe(
+    R.prop<any, any>('match'),
+    R.prop('params'),
+    R.pick(['page']),
+);
+
+const imageUrl = (page: number) =>
+    `${process.env.PUBLIC_URL}/images/pages/${page}`;
+
 const enhance = compose(
     withRouter,
+    mapProps(toPage),
+    debug(),
+    mapProps(({ page }: any) => ({
+        leftSrc: `${imageUrl(page)}/l.jpg`,
+        rightSrc: `${imageUrl(page)}/r.jpg`,
+    })),
+    debug(),
 );
 
 const pageLink = (i: number) => (
@@ -41,35 +61,50 @@ const pageLink = (i: number) => (
     </Link>
 );
 
-const BookPage = enhance(({ match }: any) => (
+const imageStyle = {
+    maxWidth: '100%',
+    maxHeight: '65vh',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+};
+
+const BookPage = enhance(({ leftSrc, rightSrc }: any) => (
     <Page>
         <Box fit column>
             <Box column flex={8}>
                 <Container>
                     <Row>
-                        <Column>
+                        <Column textAlign={TextAlignment.center}>
                             <img
-                                style={{ width: '100%', height: 'auto' }}
-                                src='https://via.placeholder.com/150'
+                                style={imageStyle}
+                                src={leftSrc}
                             />
-                            Page {match.params.page}
                         </Column>
-                        <Column>
+                        <Column textAlign={TextAlignment.center}>
                             <img
-                                style={{ width: '100%', height: 'auto' }}
-                                src='https://via.placeholder.com/150'
+                                style={imageStyle}
+                                src={rightSrc}
                             />
-                            Page {match.params.page}
                         </Column>
                     </Row>
                 </Container>
             </Box>
             <Box row flex={1}>
                 <Container>
-                    {R.map(
-                        pageLink,
-                        R.range(1, 40),
-                    )}
+                    <div style={{ width: '100%' }}>
+                        <p style={{ wordBreak: 'break-word', whiteSpace: 'normal' }}>
+                            <Link
+                                to='/'
+                                style={{ marginRight: '1rem' }}
+                            >
+                                Cover
+                            </Link>
+                            {R.map(
+                                pageLink,
+                                R.range(1, 40),
+                            )}
+                        </p>
+                    </div>
                 </Container>
             </Box>
         </Box>

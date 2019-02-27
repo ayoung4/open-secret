@@ -1,31 +1,59 @@
 import React from 'react';
 
-export const Container: React.SFC = ({ children, ...rest }) => (
-    <div
-        {...rest}
-        className='container'
-        style={{ height: '100%', border: '1px solid #00f' }}
-    >
-        {children}
-    </div>
-)
+export enum TextAlignment {
+    'left' = 'left',
+    'center' = 'center',
+    'right' = 'right',
+}
 
-export const Row: React.SFC = ({ children, ...rest }) => (
-    <div
-        {...rest}
-        className='row'
-        style={{ height: '100%', border: '1px solid #00f' }}
-    >
-        {children}
-    </div>
-)
+type GridComponentProps = {
+    textAlign?: TextAlignment;
+};
 
-export const Column: React.SFC = ({ children, ...rest }) => (
-    <div
-        {...rest}
-        className='one-half column'
-        style={{ height: '100%', border: '1px solid #0f0' }}
-    >
-        {children}
-    </div>
-)
+export const Container: React.SFC<GridComponentProps> =
+    ({ children, textAlign = TextAlignment.left, ...rest }) => (
+        <div
+            {...rest}
+            className='container'
+            style={{
+                textAlign,
+                height: '100%',
+                border: '1px solid #00f'
+            }}
+        >
+            {children}
+        </div>
+    );
+
+export const Row: React.SFC<GridComponentProps> =
+    ({ children, textAlign = TextAlignment.left, ...rest }) => (
+        <div
+            {...rest}
+            className='row'
+            style={{
+                textAlign,
+                height: '100%',
+                border: '1px solid #00f',
+            }}
+        >
+            {children}
+        </div>
+    );
+
+export const Column: React.SFC<GridComponentProps> =
+    ({ children, textAlign = TextAlignment.left, ...rest }) => (
+        <div
+            {...rest}
+            className='one-half column'
+            style={{
+                textAlign,
+                height: '100%',
+                border: '1px solid #0f0',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
+            {children}
+        </div>
+    );
