@@ -66,7 +66,33 @@ const imageStyle = {
     maxHeight: '65vh',
     marginLeft: 'auto',
     marginRight: 'auto',
+    border: '5px solid #000',
 };
+
+const Navigation = () => (
+    <Container>
+        <div style={{ width: '100%' }}>
+            <p style={{ wordBreak: 'break-word', whiteSpace: 'normal' }}>
+                <Link
+                    to='/'
+                    style={{ marginRight: '1rem' }}
+                >
+                    Cover
+                </Link>
+                {R.map(
+                    pageLink,
+                    R.range(1, 41),
+                )}
+                <Link
+                    to='/about'
+                    style={{ marginRight: '1rem' }}
+                >
+                    About
+                </Link>
+            </p>
+        </div>
+    </Container>
+);
 
 const BookPage = enhance(({ leftSrc, rightSrc }: any) => (
     <Page>
@@ -74,13 +100,13 @@ const BookPage = enhance(({ leftSrc, rightSrc }: any) => (
             <Box column flex={8}>
                 <Container>
                     <Row>
-                        <Column textAlign={TextAlignment.center}>
+                        <Column textAlign={TextAlignment.center} columnClass='one-half'>
                             <img
                                 style={imageStyle}
                                 src={leftSrc}
                             />
                         </Column>
-                        <Column textAlign={TextAlignment.center}>
+                        <Column textAlign={TextAlignment.center} columnClass='one-half'>
                             <img
                                 style={imageStyle}
                                 src={rightSrc}
@@ -90,26 +116,35 @@ const BookPage = enhance(({ leftSrc, rightSrc }: any) => (
                 </Container>
             </Box>
             <Box row flex={1}>
-                <Container>
-                    <div style={{ width: '100%' }}>
-                        <p style={{ wordBreak: 'break-word', whiteSpace: 'normal' }}>
-                            <Link
-                                to='/'
-                                style={{ marginRight: '1rem' }}
-                            >
-                                Cover
-                            </Link>
-                            {R.map(
-                                pageLink,
-                                R.range(1, 40),
-                            )}
-                        </p>
-                    </div>
-                </Container>
+                <Navigation />
             </Box>
         </Box>
     </Page>
 ));
+
+const AboutPage = () => (
+    <Page>
+        <Box fit column>
+            <Box column flex={8}>
+                <Container>
+                    <Row>
+                        <Column textAlign={TextAlignment.left} columnClass='sixteen'>
+                            <div>
+                                <h3>Alfred Young</h3>
+                                <p>artist | author</p>
+                                <p>alfredalexanderyoung@gmail.com</p>
+                                <a href="http://alfredyoungart.com">alfredyoungart.com</a>
+                            </div>
+                        </Column>
+                    </Row>
+                </Container>
+            </Box>
+            <Box row flex={1}>
+                <Navigation />
+            </Box>
+        </Box>
+    </Page>
+);
 
 export const App: React.SFC = () => (
     <BrowserRouter>
@@ -119,6 +154,9 @@ export const App: React.SFC = () => (
             </Route>
             <Route path='/page/:page'>
                 <BookPage />
+            </Route>
+            <Route path='/about' exact>
+                <AboutPage />
             </Route>
             <Route path='*'>
                 <div>

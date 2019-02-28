@@ -8,6 +8,7 @@ export enum TextAlignment {
 
 type GridComponentProps = {
     textAlign?: TextAlignment;
+    columnClass?: string;
 };
 
 export const Container: React.SFC<GridComponentProps> =
@@ -18,7 +19,6 @@ export const Container: React.SFC<GridComponentProps> =
             style={{
                 textAlign,
                 height: '100%',
-                border: '1px solid #00f'
             }}
         >
             {children}
@@ -33,7 +33,6 @@ export const Row: React.SFC<GridComponentProps> =
             style={{
                 textAlign,
                 height: '100%',
-                border: '1px solid #00f',
             }}
         >
             {children}
@@ -41,14 +40,13 @@ export const Row: React.SFC<GridComponentProps> =
     );
 
 export const Column: React.SFC<GridComponentProps> =
-    ({ children, textAlign = TextAlignment.left, ...rest }) => (
+    ({ children, textAlign = TextAlignment.left, columnClass, ...rest }) => (
         <div
             {...rest}
-            className='one-half column'
+            className={`${columnClass} column`}
             style={{
                 textAlign,
                 height: '100%',
-                border: '1px solid #0f0',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
